@@ -31,7 +31,9 @@
 			<!-- 右侧登录表单 -->
 			<view class="login-form-wrapper">
 				<view class="form-header">
-					<view class="header-icon">🏪</view>
+					<view class="header-logo">
+						<image src="/static/mlogo.jpg" class="logo-image" mode="aspectFit"></image>
+					</view>
 					<text class="form-title">店铺登录</text>
 					<text class="form-subtitle">管理您的宠物店业务</text>
 				</view>
@@ -403,9 +405,31 @@
 		margin-bottom: 60rpx;
 	}
 
-	.header-icon {
-		font-size: 60rpx;
+	.header-logo {
 		margin-bottom: 25rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.logo-image {
+		width: 120rpx;
+		height: 120rpx;
+		border-radius: 20rpx;
+		box-shadow: 0 8rpx 25rpx rgba(255, 255, 255, 0.3);
+		border: 3rpx solid rgba(255, 255, 255, 0.8);
+		animation: logoGlow 3s ease-in-out infinite alternate;
+	}
+	
+	@keyframes logoGlow {
+		0% { 
+			box-shadow: 0 8rpx 25rpx rgba(255, 255, 255, 0.3);
+			transform: scale(1);
+		}
+		100% { 
+			box-shadow: 0 12rpx 35rpx rgba(255, 255, 255, 0.5);
+			transform: scale(1.02);
+		}
 	}
 
 	.form-title {
