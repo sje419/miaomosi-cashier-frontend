@@ -1,47 +1,70 @@
 <template>
 	<page-meta :root-font-size="rootSize"></page-meta>
-	<view class="pet-login-container" :style="themeColor">
-		<!-- 背景装饰元素 -->
+	<view class="classic-login-container">
+		<!-- 背景装饰 -->
 		<view class="bg-decoration">
-			<view class="paw-print paw-1">🐾</view>
-			<view class="paw-print paw-2">🐾</view>
-			<view class="paw-print paw-3">🐾</view>
-			<view class="paw-print paw-4">🐾</view>
-			<view class="paw-print paw-5">🐾</view>
-			<view class="floating-heart heart-1">💖</view>
-			<view class="floating-heart heart-2">💖</view>
-			<view class="floating-heart heart-3">💖</view>
+			<view class="bg-circle circle-1"></view>
+			<view class="bg-circle circle-2"></view>
+			<view class="bg-circle circle-3"></view>
+			<view class="floating-elements">
+				<view class="element element-1"></view>
+				<view class="element element-2"></view>
+				<view class="element element-3"></view>
+			</view>
 		</view>
 
 		<!-- 主要登录区域 -->
 		<view class="login-main">
 			<!-- 左侧装饰区域 -->
 			<view class="left-decoration">
-				<view class="pet-mascot">
-					<view class="cat-face">🐱</view>
-					<view class="dog-face">🐶</view>
+				<view class="brand-showcase">
+					<view class="logo-display">
+						<image src="/static/mlogo.jpg" class="main-logo" mode="aspectFit"></image>
+						<view class="logo-shine"></view>
+					</view>
+					<view class="welcome-content">
+						<text class="welcome-title">欢迎使用</text>
+						<text class="brand-name">喵莫思收银台</text>
+						<text class="welcome-subtitle">宠友云门店管理系统</text>
+						<view class="feature-list">
+							<view class="feature-item">
+								<text class="feature-icon">💼</text>
+								<text class="feature-text">专业管理</text>
+							</view>
+							<view class="feature-item">
+								<text class="feature-icon">🔒</text>
+								<text class="feature-text">安全可靠</text>
+							</view>
+							<view class="feature-item">
+								<text class="feature-icon">⚡</text>
+								<text class="feature-text">高效便捷</text>
+							</view>
+						</view>
+					</view>
 				</view>
-				<view class="welcome-text">
-					<text class="welcome-title">欢迎来到</text>
-					<text class="brand-name">喵莫思宠物收银台</text>
-					<text class="welcome-subtitle">宠友云门店管理系统</text>
+				<view class="decoration-elements">
+					<view class="deco-line line-1"></view>
+					<view class="deco-line line-2"></view>
+					<view class="deco-circle circle-small"></view>
+					<view class="deco-circle circle-medium"></view>
 				</view>
 			</view>
 
 			<!-- 右侧登录表单 -->
 			<view class="login-form-wrapper">
 				<view class="form-header">
-					<view class="header-logo">
-						<image src="/static/mlogo.jpg" class="logo-image" mode="aspectFit"></image>
-					</view>
-					<text class="form-title">店铺登录</text>
-					<text class="form-subtitle">管理您的宠物店业务</text>
+					<text class="form-title">账户登录</text>
+					<text class="form-subtitle">请输入您的登录凭据</text>
+					<view class="header-divider"></view>
 				</view>
 
-				<view class="login-form">
-					<!-- 用户名输入 -->
+				<view class="form-container">
+				<!-- 用户名输入 -->
+				<view class="input-wrapper">
 					<view class="input-group">
-						<view class="input-icon">👤</view>
+						<view class="input-icon">
+							<text class="icon-user">👤</text>
+						</view>
 						<input 
 							type="text" 
 							@confirm="loginFn" 
@@ -50,11 +73,16 @@
 							placeholder-class="input-placeholder"
 							class="form-input"
 						/>
+						<view class="input-border"></view>
 					</view>
+				</view>
 
-					<!-- 密码输入 -->
+				<!-- 密码输入 -->
+				<view class="input-wrapper">
 					<view class="input-group">
-						<view class="input-icon">🔐</view>
+						<view class="input-icon">
+							<text class="icon-lock">🔒</text>
+						</view>
 						<input 
 							:type="passShow ? 'text' : 'password'"
 							@confirm="loginFn" 
@@ -64,55 +92,61 @@
 							class="form-input"
 						/>
 						<view class="password-toggle" @click="passShow = !passShow">
-							<text class="toggle-icon">{{ passShow ? '🔓' : '🔒' }}</text>
+							<text class="toggle-icon">{{ passShow ? '👁️' : '🙈' }}</text>
 						</view>
+						<view class="input-border"></view>
 					</view>
+				</view>
 
-					<!-- 验证码输入 -->
-					<view class="input-group">
-						<view class="input-icon">🔢</view>
+				<!-- 验证码输入 -->
+				<view class="input-wrapper">
+					<view class="input-group captcha-group">
+						<view class="input-icon">
+							<text class="icon-code">🔢</text>
+						</view>
 						<input 
 							type="number" 
 							@confirm="loginFn" 
 							v-model="formData.vercode" 
-							placeholder="请输入验证码" 
+							placeholder="验证码" 
 							placeholder-class="input-placeholder"
 							class="form-input captcha-input"
 							maxlength="4"
 						/>
-						<image :src="captcha.img" class="captcha-image" @click="getCaptchaFn" />
+						<view class="captcha-wrapper" @click="getCaptchaFn">
+							<image :src="captcha.img" class="captcha-image" />
+						</view>
+						<view class="input-border"></view>
 					</view>
+				</view>
 
-					<!-- 登录按钮 -->
-					<button type="default" class="pet-login-btn" @click="loginFn" :disabled="isSub">
-						<text v-if="!isSub">🚀 立即登录</text>
-						<text v-else>🐾 登录中...</text>
+				<!-- 登录按钮 -->
+				<view class="button-wrapper">
+					<button type="default" class="login-button" @click="loginFn" :disabled="isSub">
+						<view class="button-content">
+							<text v-if="!isSub" class="button-text">立即登录</text>
+							<text v-else class="button-text loading">登录中...</text>
+							<view v-if="isSub" class="loading-spinner"></view>
+						</view>
+						<view class="button-ripple"></view>
 					</button>
+				</view>
 
-					<!-- 底部装饰 -->
-					<view class="form-footer">
-						<text class="footer-text">为宠物店主提供专业服务 🐕‍🦺</text>
-					</view>
+				<!-- 底部信息 -->
+				<view class="form-footer">
+					<text class="footer-text">安全可靠的门店管理解决方案</text>
 				</view>
 			</view>
 		</view>
+	</view>
 
-		<!-- 版本切换按钮 -->
-		<view class="version-switch" @click="switchToOldLogin">
-			<text class="switch-text">🔄 切换经典版本</text>
+		<!-- 版本切换 -->
+		<view class="version-switch" @click="switchToPetLogin">
+			<view class="switch-content">
+				<text class="switch-icon">🎨</text>
+				<text class="switch-text">体验宠物版</text>
+			</view>
 		</view>
-		
-		<!-- 自定义弹窗 -->
-		<pet-modal 
-			:visible="showClassicModal"
-			title="切换到经典版"
-			content="要切换回简洁的传统登录页面吗？"
-			iconText="📝"
-			cancelText="继续体验"
-			confirmText="切换经典"
-			@cancel="showClassicModal = false"
-			@confirm="confirmSwitchToClassic"
-		></pet-modal>
 	</view>
 </template>
 
@@ -136,7 +170,7 @@
 					img: ''
 				},
 				isSub: false,
-				showClassicModal: false // 控制经典版弹窗显示
+	
 			};
 		},
 		onLoad() {
@@ -230,17 +264,11 @@
 				}
 			},
 			/**
-			 * 切换到旧版登录页
+			 * 切换到宠物版登录页
 			 */
-			switchToOldLogin() {
-				this.showClassicModal = true;
-			},
-			/**
-			 * 确认切换到经典版
-			 */
-			confirmSwitchToClassic() {
+			switchToPetLogin() {
 				uni.redirectTo({
-					url: '/pages/login/login'
+					url: '/pages/login/login-pet'
 				});
 			}
 		},
@@ -259,10 +287,10 @@
 	page {
 		width: 100vw;
 		height: 100vh;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background: linear-gradient(135deg, #2050B3 0%, #4A90E2 50%, #EACF4F 100%);
 	}
 
-	.pet-login-container {
+	.classic-login-container {
 		position: relative;
 		width: 100vw;
 		height: 100vh;
@@ -273,7 +301,7 @@
 		overflow: hidden;
 	}
 
-	/* 背景装饰动画 */
+	/* 背景装饰元素 */
 	.bg-decoration {
 		position: absolute;
 		top: 0;
@@ -284,38 +312,78 @@
 		z-index: 1;
 	}
 
-	.paw-print {
+	.bg-circle {
 		position: absolute;
-		font-size: 24rpx;
-		opacity: 0.6;
-		animation: float 6s ease-in-out infinite;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
+		animation: floatCircle 8s ease-in-out infinite;
 	}
 
-	.paw-1 { top: 10%; left: 10%; animation-delay: 0s; }
-	.paw-2 { top: 20%; right: 15%; animation-delay: 1s; }
-	.paw-3 { bottom: 30%; left: 5%; animation-delay: 2s; }
-	.paw-4 { bottom: 15%; right: 10%; animation-delay: 3s; }
-	.paw-5 { top: 50%; left: 3%; animation-delay: 4s; }
+	.circle-1 {
+		width: 200rpx;
+		height: 200rpx;
+		top: 10%;
+		left: 10%;
+		animation-delay: 0s;
+	}
 
-	.floating-heart {
+	.circle-2 {
+		width: 150rpx;
+		height: 150rpx;
+		bottom: 20%;
+		right: 15%;
+		animation-delay: 2s;
+	}
+
+	.circle-3 {
+		width: 100rpx;
+		height: 100rpx;
+		top: 60%;
+		left: 5%;
+		animation-delay: 4s;
+	}
+
+	.floating-elements {
 		position: absolute;
-		font-size: 20rpx;
-		opacity: 0.7;
-		animation: heartbeat 4s ease-in-out infinite;
+		width: 100%;
+		height: 100%;
 	}
 
-	.heart-1 { top: 15%; right: 5%; animation-delay: 0.5s; }
-	.heart-2 { bottom: 20%; left: 15%; animation-delay: 1.5s; }
-	.heart-3 { top: 60%; right: 20%; animation-delay: 2.5s; }
-
-	@keyframes float {
-		0%, 100% { transform: translateY(0px) rotate(0deg); }
-		50% { transform: translateY(-20px) rotate(10deg); }
+	.element {
+		position: absolute;
+		width: 6rpx;
+		height: 6rpx;
+		background: rgba(234, 207, 79, 0.8);
+		border-radius: 50%;
+		animation: sparkle 4s ease-in-out infinite;
 	}
 
-	@keyframes heartbeat {
-		0%, 100% { transform: scale(1); }
-		50% { transform: scale(1.2); }
+	.element-1 {
+		top: 25%;
+		right: 20%;
+		animation-delay: 1s;
+	}
+
+	.element-2 {
+		bottom: 30%;
+		left: 25%;
+		animation-delay: 2.5s;
+	}
+
+	.element-3 {
+		top: 45%;
+		right: 10%;
+		animation-delay: 3.5s;
+	}
+
+	@keyframes floatCircle {
+		0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
+		50% { transform: translateY(-30px) rotate(180deg); opacity: 0.2; }
+	}
+
+	@keyframes sparkle {
+		0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+		50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
 	}
 
 	/* 主要登录区域 */
@@ -328,156 +396,294 @@
 		min-height: 600rpx;
 		background: rgba(255, 255, 255, 0.95);
 		border-radius: 40rpx;
-		box-shadow: 0 25rpx 80rpx rgba(0, 0, 0, 0.2);
-		backdrop-filter: blur(15px);
+		box-shadow: 0 30rpx 80rpx rgba(0, 0, 0, 0.15);
+		backdrop-filter: blur(20px);
 		overflow: hidden;
+		animation: cardEntrance 0.8s ease-out;
+	}
+
+	@keyframes cardEntrance {
+		0% {
+			transform: translateY(50px) scale(0.9);
+			opacity: 0;
+		}
+		100% {
+			transform: translateY(0) scale(1);
+			opacity: 1;
+		}
 	}
 
 	/* 左侧装饰区域 */
 	.left-decoration {
 		flex: 1;
-		background: linear-gradient(45deg, #2050B3, #4A90E2);
+		background: linear-gradient(135deg, #2050B3 0%, #4A90E2 100%);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 50rpx;
+		padding: 60rpx 50rpx;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.brand-showcase {
+		text-align: center;
+		z-index: 2;
 		position: relative;
 	}
 
-	.pet-mascot {
+	.logo-display {
+		position: relative;
+		margin-bottom: 40rpx;
 		display: flex;
-		gap: 25rpx;
-		margin-bottom: 50rpx;
+		justify-content: center;
+		align-items: center;
 	}
 
-	.cat-face, .dog-face {
-		font-size: 80rpx;
-		animation: bounce 3s ease-in-out infinite alternate;
+	.main-logo {
+		width: 150rpx;
+		height: 150rpx;
+		border-radius: 25rpx;
+		box-shadow: 0 15rpx 35rpx rgba(0, 0, 0, 0.2);
+		border: 4rpx solid rgba(255, 255, 255, 0.9);
+		animation: logoFloat 4s ease-in-out infinite;
 	}
 
-	.dog-face {
-		animation-delay: 1.5s;
+	.logo-shine {
+		position: absolute;
+		top: -8rpx;
+		left: -8rpx;
+		right: -8rpx;
+		bottom: -8rpx;
+		background: linear-gradient(45deg, #EACF4F, rgba(255, 255, 255, 0.8), #EACF4F);
+		border-radius: 35rpx;
+		z-index: -1;
+		opacity: 0;
+		animation: logoShine 6s ease-in-out infinite;
 	}
 
-	@keyframes bounce {
-		0% { transform: translateY(0px); }
-		100% { transform: translateY(-10px); }
+	@keyframes logoFloat {
+		0%, 100% { transform: translateY(0px) scale(1); }
+		50% { transform: translateY(-8px) scale(1.02); }
 	}
 
-	.welcome-text {
-		text-align: center;
+	@keyframes logoShine {
+		0%, 100% { opacity: 0; transform: scale(1); }
+		50% { opacity: 0.4; transform: scale(1.05); }
+	}
+
+	.welcome-content {
 		color: white;
+		text-align: center;
 	}
 
 	.welcome-title {
 		display: block;
 		font-size: 32rpx;
 		font-weight: 300;
-		margin-bottom: 12rpx;
+		margin-bottom: 15rpx;
+		opacity: 0.9;
 	}
 
 	.brand-name {
 		display: block;
-		font-size: 42rpx;
+		font-size: 48rpx;
 		font-weight: bold;
-		margin-bottom: 18rpx;
-		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+		margin-bottom: 20rpx;
+		text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+		letter-spacing: 2rpx;
 	}
 
 	.welcome-subtitle {
 		display: block;
 		font-size: 28rpx;
-		opacity: 0.9;
+		margin-bottom: 40rpx;
+		opacity: 0.85;
+	}
+
+	.feature-list {
+		display: flex;
+		flex-direction: column;
+		gap: 20rpx;
+		align-items: center;
+	}
+
+	.feature-item {
+		display: flex;
+		align-items: center;
+		gap: 15rpx;
+		padding: 12rpx 25rpx;
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 25rpx;
+		backdrop-filter: blur(10px);
+		animation: featureSlide 0.6s ease-out;
+	}
+
+	.feature-item:nth-child(1) { animation-delay: 0.2s; }
+	.feature-item:nth-child(2) { animation-delay: 0.4s; }
+	.feature-item:nth-child(3) { animation-delay: 0.6s; }
+
+	@keyframes featureSlide {
+		0% {
+			transform: translateX(-30px);
+			opacity: 0;
+		}
+		100% {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	.feature-icon {
+		font-size: 24rpx;
+	}
+
+	.feature-text {
+		font-size: 24rpx;
+		color: white;
+		font-weight: 500;
+	}
+
+	.decoration-elements {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.deco-line {
+		position: absolute;
+		background: rgba(234, 207, 79, 0.3);
+		border-radius: 2rpx;
+	}
+
+	.line-1 {
+		width: 80rpx;
+		height: 4rpx;
+		top: 15%;
+		right: 10%;
+		animation: lineFloat 4s ease-in-out infinite;
+		animation-delay: 1s;
+	}
+
+	.line-2 {
+		width: 60rpx;
+		height: 4rpx;
+		bottom: 20%;
+		left: 15%;
+		animation: lineFloat 4s ease-in-out infinite;
+		animation-delay: 2s;
+	}
+
+	.deco-circle {
+		position: absolute;
+		border-radius: 50%;
+		background: rgba(234, 207, 79, 0.2);
+		animation: circleFloat 6s ease-in-out infinite;
+	}
+
+	.circle-small {
+		width: 20rpx;
+		height: 20rpx;
+		top: 25%;
+		left: 8%;
+		animation-delay: 0.5s;
+	}
+
+	.circle-medium {
+		width: 30rpx;
+		height: 30rpx;
+		bottom: 30%;
+		right: 12%;
+		animation-delay: 1.5s;
+	}
+
+	@keyframes lineFloat {
+		0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+		50% { transform: translateY(-10px) rotate(5deg); opacity: 0.6; }
+	}
+
+	@keyframes circleFloat {
+		0%, 100% { transform: scale(1) translateY(0px); opacity: 0.2; }
+		50% { transform: scale(1.2) translateY(-15px); opacity: 0.5; }
 	}
 
 	/* 右侧登录表单 */
 	.login-form-wrapper {
 		flex: 1;
-		padding: 70rpx 50rpx;
+		padding: 80rpx 60rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		background: #fff;
 	}
 
 	.form-header {
 		text-align: center;
-		margin-bottom: 60rpx;
-	}
-
-	.header-logo {
-		margin-bottom: 25rpx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	.logo-image {
-		width: 120rpx;
-		height: 120rpx;
-		border-radius: 20rpx;
-		box-shadow: 0 8rpx 25rpx rgba(255, 255, 255, 0.3);
-		border: 3rpx solid rgba(255, 255, 255, 0.8);
-		animation: logoGlow 3s ease-in-out infinite alternate;
-	}
-	
-	@keyframes logoGlow {
-		0% { 
-			box-shadow: 0 8rpx 25rpx rgba(255, 255, 255, 0.3);
-			transform: scale(1);
-		}
-		100% { 
-			box-shadow: 0 12rpx 35rpx rgba(255, 255, 255, 0.5);
-			transform: scale(1.02);
-		}
+		margin-bottom: 50rpx;
 	}
 
 	.form-title {
 		display: block;
 		font-size: 36rpx;
 		font-weight: bold;
-		color: #333;
+		color: #2050B3;
 		margin-bottom: 12rpx;
+		letter-spacing: 1rpx;
 	}
 
 	.form-subtitle {
 		display: block;
 		font-size: 26rpx;
 		color: #666;
+		margin-bottom: 25rpx;
 	}
 
-	.login-form {
+	/* 表单容器 */
+	.form-container {
 		width: 100%;
+	}
+
+	.input-wrapper {
+		margin-bottom: 30rpx;
 	}
 
 	.input-group {
 		position: relative;
 		display: flex;
 		align-items: center;
-		margin-bottom: 35rpx;
 		background: #f8f9fa;
-		border-radius: 18rpx;
-		padding: 0 25rpx;
+		border-radius: 16rpx;
+		padding: 0 20rpx;
 		border: 2rpx solid transparent;
 		transition: all 0.3s ease;
+		overflow: hidden;
 	}
 
 	.input-group:focus-within {
 		border-color: #2050B3;
-		background: white;
-		box-shadow: 0 0 20rpx rgba(32, 80, 179, 0.2);
+		background: #fff;
+		box-shadow: 0 0 0 4rpx rgba(32, 80, 179, 0.1);
 	}
 
 	.input-icon {
-		margin-right: 18rpx;
-		font-size: 28rpx;
+		margin-right: 15rpx;
 		color: #2050B3;
+		font-size: 24rpx;
+		transition: transform 0.3s ease;
+	}
+
+	.input-group:focus-within .input-icon {
+		transform: scale(1.1);
 	}
 
 	.form-input {
 		flex: 1;
-		height: 90rpx;
-		font-size: 30rpx;
+		height: 80rpx;
+		font-size: 28rpx;
 		color: #333;
 		border: none;
 		background: transparent;
@@ -485,89 +691,191 @@
 
 	.input-placeholder {
 		color: #999;
-		font-size: 28rpx;
+		font-size: 26rpx;
+	}
+
+	.captcha-group {
+		padding-right: 0;
 	}
 
 	.captcha-input {
-		flex: 1;
-		margin-right: 18rpx;
+		padding-right: 15rpx;
 	}
 
-	.password-toggle {
-		padding: 12rpx;
+	.captcha-wrapper {
+		display: flex;
+		align-items: center;
+		padding: 10rpx 15rpx;
 		cursor: pointer;
-	}
-
-	.toggle-icon {
-		font-size: 28rpx;
 	}
 
 	.captcha-image {
-		width: 140rpx;
-		height: 70rpx;
-		border-radius: 10rpx;
-		cursor: pointer;
+		width: 120rpx;
+		height: 60rpx;
+		border-radius: 8rpx;
 		border: 1rpx solid #e0e0e0;
+		transition: transform 0.2s ease;
 	}
 
-	.pet-login-btn {
-		width: 100%;
-		height: 90rpx;
+	.captcha-wrapper:active .captcha-image {
+		transform: scale(0.95);
+	}
+
+	.password-toggle {
+		padding: 15rpx;
+		cursor: pointer;
+		transition: transform 0.2s ease;
+	}
+
+	.password-toggle:active {
+		transform: scale(0.9);
+	}
+
+	.toggle-icon {
+		font-size: 24rpx;
+	}
+
+	.input-border {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: 0;
+		height: 2rpx;
 		background: linear-gradient(45deg, #2050B3, #EACF4F);
+		transition: all 0.3s ease;
+		transform: translateX(-50%);
+	}
+
+	.input-group:focus-within .input-border {
+		width: 100%;
+	}
+
+	/* 登录按钮 */
+	.button-wrapper {
+		margin: 40rpx 0 30rpx;
+	}
+
+	.login-button {
+		position: relative;
+		width: 100%;
+		height: 80rpx;
+		background: linear-gradient(45deg, #2050B3, #4A90E2, #EACF4F);
 		color: white;
 		border: none;
-		border-radius: 18rpx;
-		font-size: 32rpx;
+		border-radius: 16rpx;
+		font-size: 30rpx;
 		font-weight: bold;
-		margin-top: 25rpx;
-		margin-bottom: 35rpx;
 		transition: all 0.3s ease;
-		box-shadow: 0 10rpx 25rpx rgba(32, 80, 179, 0.3);
+		box-shadow: 0 8rpx 20rpx rgba(32, 80, 179, 0.3);
+		overflow: hidden;
 	}
 
-	.pet-login-btn:hover {
-		transform: translateY(-2rpx);
-		box-shadow: 0 15rpx 30rpx rgba(32, 80, 179, 0.4);
+	.login-button:not(:disabled):active {
+		transform: translateY(2rpx);
+		box-shadow: 0 4rpx 12rpx rgba(32, 80, 179, 0.4);
 	}
 
-	.pet-login-btn:disabled {
+	.login-button:disabled {
 		opacity: 0.7;
 		transform: none;
 	}
 
+	.button-content {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10rpx;
+	}
+
+	.button-text {
+		letter-spacing: 1rpx;
+	}
+
+	.loading-spinner {
+		width: 24rpx;
+		height: 24rpx;
+		border: 2rpx solid rgba(255, 255, 255, 0.3);
+		border-top: 2rpx solid white;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+
+	.button-ripple {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(255, 255, 255, 0.1);
+		transform: translateX(-100%);
+		transition: transform 0.6s ease;
+	}
+
+	.login-button:active .button-ripple {
+		transform: translateX(100%);
+	}
+
+	/* 底部信息 */
 	.form-footer {
 		text-align: center;
-		margin-top: 25rpx;
+		margin-top: 20rpx;
 	}
 
 	.footer-text {
-		font-size: 24rpx;
+		font-size: 22rpx;
 		color: #999;
+		line-height: 1.4;
 	}
 
 	/* 版本切换按钮 */
 	.version-switch {
 		position: absolute;
-		top: 45rpx;
-		right: 45rpx;
+		top: 40rpx;
+		right: 40rpx;
 		z-index: 20;
 		background: rgba(255, 255, 255, 0.9);
-		padding: 18rpx 30rpx;
-		border-radius: 30rpx;
+		border-radius: 25rpx;
+		padding: 15rpx 25rpx;
 		backdrop-filter: blur(10px);
 		cursor: pointer;
 		transition: all 0.3s ease;
+		box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.1);
 	}
 
-	.version-switch:hover {
+	.version-switch:active {
+		transform: scale(0.95);
 		background: rgba(255, 255, 255, 1);
-		transform: scale(1.05);
+	}
+
+	.switch-content {
+		display: flex;
+		align-items: center;
+		gap: 8rpx;
+	}
+
+	.switch-icon {
+		font-size: 20rpx;
 	}
 
 	.switch-text {
-		font-size: 26rpx;
+		font-size: 24rpx;
 		color: #666;
 		font-weight: 500;
+	}
+
+	.header-divider {
+		width: 60rpx;
+		height: 4rpx;
+		background: linear-gradient(45deg, #2050B3, #EACF4F);
+		border-radius: 2rpx;
+		margin: 0 auto;
 	}
 
 	/* 响应式设计 */
@@ -579,24 +887,55 @@
 		}
 
 		.left-decoration {
-			padding: 35rpx;
-			min-height: 220rpx;
+			padding: 40rpx 35rpx;
+			min-height: 250rpx;
 		}
 
-		.pet-mascot {
-			margin-bottom: 25rpx;
-		}
-
-		.cat-face, .dog-face {
-			font-size: 55rpx;
+		.main-logo {
+			width: 100rpx;
+			height: 100rpx;
 		}
 
 		.brand-name {
-			font-size: 34rpx;
+			font-size: 38rpx;
+		}
+
+		.feature-list {
+			flex-direction: row;
+			justify-content: center;
+			gap: 15rpx;
+		}
+
+		.feature-item {
+			padding: 8rpx 15rpx;
+		}
+
+		.feature-text {
+			font-size: 20rpx;
 		}
 
 		.login-form-wrapper {
-			padding: 45rpx 35rpx;
+			padding: 50rpx 40rpx;
+		}
+
+		.form-title {
+			font-size: 32rpx;
+		}
+
+		.form-input {
+			height: 70rpx;
+			font-size: 26rpx;
+		}
+
+		.login-button {
+			height: 70rpx;
+			font-size: 28rpx;
+		}
+
+		.version-switch {
+			top: 30rpx;
+			right: 30rpx;
+			padding: 12rpx 20rpx;
 		}
 	}
 </style>
