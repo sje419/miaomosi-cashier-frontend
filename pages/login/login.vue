@@ -1,44 +1,117 @@
 <template>
 	<page-meta :root-font-size="rootSize"></page-meta>
-	<view class="container" :style="themeColor">
-		<view class="login-wrap">
-			<view class="header">
-				<view class="title">收银台</view>
+	<view class="pet-login-container" :style="themeColor">
+		<!-- 背景装饰元素 -->
+		<view class="bg-decoration">
+			<view class="paw-print paw-1">🐾</view>
+			<view class="paw-print paw-2">🐾</view>
+			<view class="paw-print paw-3">🐾</view>
+			<view class="paw-print paw-4">🐾</view>
+			<view class="paw-print paw-5">🐾</view>
+			<view class="floating-heart heart-1">💖</view>
+			<view class="floating-heart heart-2">💖</view>
+			<view class="floating-heart heart-3">💖</view>
+		</view>
+
+		<!-- 主要登录区域 -->
+		<view class="login-main">
+			<!-- 左侧装饰区域 -->
+			<view class="left-decoration">
+				<view class="pet-mascot">
+					<view class="cat-face">🐱</view>
+					<view class="dog-face">🐶</view>
+				</view>
+				<view class="welcome-text">
+					<text class="welcome-title">欢迎来到</text>
+					<text class="brand-name">喵莫思宠物收银台</text>
+					<text class="welcome-subtitle">宠友云门店管理系统</text>
+				</view>
 			</view>
-			<view class="form-wrap">
-				<view class="input-wrap">
-					<text class="iconfont icona-xingzhuang2"></text>
-					<input type="text" @confirm="loginFn" v-model="formData.username" placeholder="请输入用户名" placeholder-class="placeholder" />
+
+			<!-- 右侧登录表单 -->
+			<view class="login-form-wrapper">
+				<view class="form-header">
+					<view class="header-logo">
+						<image src="/static/mlogo.jpg" class="logo-image" mode="aspectFit"></image>
+					</view>
+					<text class="form-title">店铺登录</text>
+					<text class="form-subtitle">管理您的宠物店业务</text>
 				</view>
-				<view class="input-wrap">
-					<text class="iconfont iconmima"></text>
-					<input type="text" @confirm="loginFn" v-model="formData.password" placeholder="请输入密码" placeholder-class="placeholder" v-show="passShow" />
-					<input type="password" @confirm="loginFn" v-model="formData.password" placeholder="请输入密码" placeholder-class="placeholder" v-show="!passShow" />
-					<view class="iconfont pass-show" :class="{ iconyanjing5: passShow, iconinvisible: !passShow }" @click="passShow = !passShow"></view>
+
+				<view class="login-form">
+					<!-- 用户名输入 -->
+					<view class="input-group">
+						<view class="input-icon">👤</view>
+						<input 
+							type="text" 
+							@confirm="loginFn" 
+							v-model="formData.username" 
+							placeholder="请输入用户名" 
+							placeholder-class="input-placeholder"
+							class="form-input"
+						/>
+					</view>
+
+					<!-- 密码输入 -->
+					<view class="input-group">
+						<view class="input-icon">🔐</view>
+						<input 
+							:type="passShow ? 'text' : 'password'"
+							@confirm="loginFn" 
+							v-model="formData.password" 
+							placeholder="请输入密码" 
+							placeholder-class="input-placeholder"
+							class="form-input"
+						/>
+						<view class="password-toggle" @click="passShow = !passShow">
+							<text class="toggle-icon">{{ passShow ? '🔓' : '🔒' }}</text>
+						</view>
+					</view>
+
+					<!-- 验证码输入 -->
+					<view class="input-group">
+						<view class="input-icon">🔢</view>
+						<input 
+							type="number" 
+							@confirm="loginFn" 
+							v-model="formData.vercode" 
+							placeholder="请输入验证码" 
+							placeholder-class="input-placeholder"
+							class="form-input captcha-input"
+							maxlength="4"
+						/>
+						<image :src="captcha.img" class="captcha-image" @click="getCaptchaFn" />
+					</view>
+
+					<!-- 登录按钮 -->
+					<button type="default" class="pet-login-btn" @click="loginFn" :disabled="isSub">
+						<text v-if="!isSub">🚀 立即登录</text>
+						<text v-else>🐾 登录中...</text>
+					</button>
+
+					<!-- 底部装饰 -->
+					<view class="form-footer">
+						<text class="footer-text">为宠物店主提供专业服务 🐕‍🦺</text>
+					</view>
 				</view>
-				<view class="input-wrap">
-					<text class="iconfont iconyanzhengma"></text>
-					<input type="number" @confirm="loginFn" v-model="formData.vercode" placeholder="请输入验证码" placeholder-class="placeholder" maxlength="4" />
-					<image :src="captcha.img" class="captcha" @click="getCaptchaFn" />
-				</view>
-				<button type="default" class="login-btn primary-btn" @click="loginFn">登录</button>
-			</view>
-			<!-- 版本切换按钮 -->
-			<view class="version-switch-classic" @click="switchToPetLogin">
-				<text class="switch-text-classic">🐾 体验宠物版登录</text>
 			</view>
 		</view>
+
+		<!-- 版本切换按钮 -->
+		<view class="version-switch" @click="switchToOldLogin">
+			<text class="switch-text">🔄 切换经典版本</text>
+		</view>
 		
-		<!-- 自定义宠物主题弹窗 -->
+		<!-- 自定义弹窗 -->
 		<pet-modal 
-			:visible="showPetModal"
-			title="切换登录主题"
-			content="想要体验专为宠物行业设计的温馨登录页面吗？"
-			iconText="🐾"
-			cancelText="保持经典"
-			confirmText="体验宠物版"
-			@cancel="showPetModal = false"
-			@confirm="confirmSwitchToPet"
+			:visible="showClassicModal"
+			title="切换到经典版"
+			content="要切换回简洁的传统登录页面吗？"
+			iconText="📝"
+			cancelText="继续体验"
+			confirmText="切换经典"
+			@cancel="showClassicModal = false"
+			@confirm="confirmSwitchToClassic"
 		></pet-modal>
 	</view>
 </template>
@@ -63,7 +136,7 @@
 					img: ''
 				},
 				isSub: false,
-				showPetModal: false // 控制宠物主题弹窗显示
+				showClassicModal: false // 控制经典版弹窗显示
 			};
 		},
 		onLoad() {
@@ -82,6 +155,9 @@
 					}
 				})
 			},
+			/**
+			 * 登录功能
+			 */
 			loginFn() {
 				var data = {
 					username: this.formData.username,
@@ -97,7 +173,9 @@
 					if (this.isSub) return;
 					this.isSub = true;
 
-					uni.showLoading({});
+					uni.showLoading({
+						title: '正在登录...'
+					});
 
 					login(data).then(res => {
 						uni.hideLoading();
@@ -123,6 +201,9 @@
 					})
 				}
 			},
+			/**
+			 * 表单验证
+			 */
 			verify(data) {
 				var rule = [{
 					name: 'username',
@@ -145,23 +226,23 @@
 					this.$util.showToast({
 						title: validate.error
 					});
-						return false;
-					}
-				},
-				/**
-				 * 切换到宠物版登录页
-				 */
-				switchToPetLogin() {
-					this.showPetModal = true;
-				},
-				/**
-				 * 确认切换到宠物版
-				 */
-				confirmSwitchToPet() {
-					uni.redirectTo({
-						url: '/pages/login/login-pet'
-					});
+					return false;
 				}
+			},
+			/**
+			 * 切换到旧版登录页
+			 */
+			switchToOldLogin() {
+				this.showClassicModal = true;
+			},
+			/**
+			 * 确认切换到经典版
+			 */
+			confirmSwitchToClassic() {
+				uni.redirectTo({
+					url: '/pages/login/login'
+				});
+			}
 		},
 		watch: {
 			menu: function(menu) {
@@ -178,156 +259,344 @@
 	page {
 		width: 100vw;
 		height: 100vh;
-		background: #f7f8fa;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 	}
 
-	.container {
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
+	.pet-login-container {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		background: linear-gradient(135deg, #2050B3 0%, #4A90E2 50%, #EACF4F 100%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-image:url(@/static/login_bg.png);
-
-		.login-bg {
-			margin-right: 1.5rem;
-			width: 5.9rem;
-			height: 4.3rem;
-
-			image {
-				width: 5.9rem;
-				height: 4.3rem;
-			}
-		}
+		overflow: hidden;
 	}
 
-	.login-wrap {
-		padding: 0.3rem 0;
-		width: 3.48rem;
-		background-color: #fff;
-		box-shadow: 0 0.01rem 0.09rem 0 rgba(15, 92, 251, 0.12);
-		border-radius: 0.05rem;
-
-		.header {
-			text-align: center;
-
-			image {
-				width: 2.13rem;
-				height: 0.78rem;
-			}
-
-			.title {
-				font-weight: bold;
-				font-size: 0.25rem;
-				margin-top: 0.1rem;
-				color: #222222;
-			}
-
-			.desc {
-				font-size: 0.16rem;
-				color: #969799;
-				margin-top: 0.1rem;
-			}
-		}
+	/* 背景装饰动画 */
+	.bg-decoration {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
 	}
 
-	.form-wrap {
+	.paw-print {
+		position: absolute;
+		font-size: 24rpx;
+		opacity: 0.6;
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.paw-1 { top: 10%; left: 10%; animation-delay: 0s; }
+	.paw-2 { top: 20%; right: 15%; animation-delay: 1s; }
+	.paw-3 { bottom: 30%; left: 5%; animation-delay: 2s; }
+	.paw-4 { bottom: 15%; right: 10%; animation-delay: 3s; }
+	.paw-5 { top: 50%; left: 3%; animation-delay: 4s; }
+
+	.floating-heart {
+		position: absolute;
+		font-size: 20rpx;
+		opacity: 0.7;
+		animation: heartbeat 4s ease-in-out infinite;
+	}
+
+	.heart-1 { top: 15%; right: 5%; animation-delay: 0.5s; }
+	.heart-2 { bottom: 20%; left: 15%; animation-delay: 1.5s; }
+	.heart-3 { top: 60%; right: 20%; animation-delay: 2.5s; }
+
+	@keyframes float {
+		0%, 100% { transform: translateY(0px) rotate(0deg); }
+		50% { transform: translateY(-20px) rotate(10deg); }
+	}
+
+	@keyframes heartbeat {
+		0%, 100% { transform: scale(1); }
+		50% { transform: scale(1.2); }
+	}
+
+	/* 主要登录区域 */
+	.login-main {
+		position: relative;
+		z-index: 10;
+		display: flex;
+		width: 95vw;
+		max-width: 1200rpx;
+		min-height: 600rpx;
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 40rpx;
+		box-shadow: 0 25rpx 80rpx rgba(0, 0, 0, 0.2);
+		backdrop-filter: blur(15px);
+		overflow: hidden;
+	}
+
+	/* 左侧装饰区域 */
+	.left-decoration {
+		flex: 1;
+		background: linear-gradient(45deg, #2050B3, #4A90E2);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		margin: 0.2rem 0;
+		justify-content: center;
+		padding: 50rpx;
+		position: relative;
+	}
 
-		.input-wrap {
-			width: 2.85rem;
-			padding: 0 0.1rem;
-			border-bottom: 0.01rem solid #e6e6e6;
-			margin-top: 0.25rem;
-			display: flex;
-			align-items: center;
-			box-sizing: border-box;
-			border-radius: 0.05rem;
+	.pet-mascot {
+		display: flex;
+		gap: 25rpx;
+		margin-bottom: 50rpx;
+	}
 
-			.iconfont {
-				margin-right: .1rem;
-				font-size: .2rem;
-				color: #46586E;
-			}
+	.cat-face, .dog-face {
+		font-size: 80rpx;
+		animation: bounce 3s ease-in-out infinite alternate;
+	}
 
-			input {
-				flex: 1;
-				height: 0.4rem;
-				line-height: 0.4rem;
-				font-size: $uni-font-size-base;
-			}
+	.dog-face {
+		animation-delay: 1.5s;
+	}
 
-			.placeholder {
-				font-size: $uni-font-size-base;
-				color: #999999;
-				font-weight: 500;
-			}
+	@keyframes bounce {
+		0% { transform: translateY(0px); }
+		100% { transform: translateY(-10px); }
+	}
 
-			.send-code {
-				color: $primary-color;
-				cursor: pointer;
+	.welcome-text {
+		text-align: center;
+		color: white;
+	}
 
-				&.disabled {
-					cursor: not-allowed;
-					color: #999;
-				}
-			}
+	.welcome-title {
+		display: block;
+		font-size: 32rpx;
+		font-weight: 300;
+		margin-bottom: 12rpx;
+	}
 
-			.captcha {
-				width: 0.8rem;
-				height: 0.3rem;
-				cursor: pointer;
-			}
+	.brand-name {
+		display: block;
+		font-size: 42rpx;
+		font-weight: bold;
+		margin-bottom: 18rpx;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+	}
 
-			.pass-show {
-				font-size: 0.14rem;
-				cursor: pointer;
-				color: #333;
-			}
+	.welcome-subtitle {
+		display: block;
+		font-size: 28rpx;
+		opacity: 0.9;
+	}
+
+	/* 右侧登录表单 */
+	.login-form-wrapper {
+		flex: 1;
+		padding: 70rpx 50rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.form-header {
+		text-align: center;
+		margin-bottom: 60rpx;
+	}
+
+	.header-logo {
+		margin-bottom: 25rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.logo-image {
+		width: 120rpx;
+		height: 120rpx;
+		border-radius: 20rpx;
+		box-shadow: 0 8rpx 25rpx rgba(255, 255, 255, 0.3);
+		border: 3rpx solid rgba(255, 255, 255, 0.8);
+		animation: logoGlow 3s ease-in-out infinite alternate;
+	}
+	
+	@keyframes logoGlow {
+		0% { 
+			box-shadow: 0 8rpx 25rpx rgba(255, 255, 255, 0.3);
+			transform: scale(1);
 		}
-
-		.login-btn {
-			width: 2.85rem;
-			margin-top: 0.3rem;
-			height: 0.4rem;
-			line-height: 0.4rem;
-			border-radius: 0.05rem;
+		100% { 
+			box-shadow: 0 12rpx 35rpx rgba(255, 255, 255, 0.5);
+			transform: scale(1.02);
 		}
 	}
-			
-	/* 版本切换按钮样式 */
-	.version-switch-classic {
+
+	.form-title {
+		display: block;
+		font-size: 36rpx;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 12rpx;
+	}
+
+	.form-subtitle {
+		display: block;
+		font-size: 26rpx;
+		color: #666;
+	}
+
+	.login-form {
+		width: 100%;
+	}
+
+	.input-group {
+		position: relative;
+		display: flex;
+		align-items: center;
+		margin-bottom: 35rpx;
+		background: #f8f9fa;
+		border-radius: 18rpx;
+		padding: 0 25rpx;
+		border: 2rpx solid transparent;
+		transition: all 0.3s ease;
+	}
+
+	.input-group:focus-within {
+		border-color: #2050B3;
+		background: white;
+		box-shadow: 0 0 20rpx rgba(32, 80, 179, 0.2);
+	}
+
+	.input-icon {
+		margin-right: 18rpx;
+		font-size: 28rpx;
+		color: #2050B3;
+	}
+
+	.form-input {
+		flex: 1;
+		height: 90rpx;
+		font-size: 30rpx;
+		color: #333;
+		border: none;
+		background: transparent;
+	}
+
+	.input-placeholder {
+		color: #999;
+		font-size: 28rpx;
+	}
+
+	.captcha-input {
+		flex: 1;
+		margin-right: 18rpx;
+	}
+
+	.password-toggle {
+		padding: 12rpx;
+		cursor: pointer;
+	}
+
+	.toggle-icon {
+		font-size: 28rpx;
+	}
+
+	.captcha-image {
+		width: 140rpx;
+		height: 70rpx;
+		border-radius: 10rpx;
+		cursor: pointer;
+		border: 1rpx solid #e0e0e0;
+	}
+
+	.pet-login-btn {
+		width: 100%;
+		height: 90rpx;
+		background: linear-gradient(45deg, #2050B3, #EACF4F);
+		color: white;
+		border: none;
+		border-radius: 18rpx;
+		font-size: 32rpx;
+		font-weight: bold;
+		margin-top: 25rpx;
+		margin-bottom: 35rpx;
+		transition: all 0.3s ease;
+		box-shadow: 0 10rpx 25rpx rgba(32, 80, 179, 0.3);
+	}
+
+	.pet-login-btn:hover {
+		transform: translateY(-2rpx);
+		box-shadow: 0 15rpx 30rpx rgba(32, 80, 179, 0.4);
+	}
+
+	.pet-login-btn:disabled {
+		opacity: 0.7;
+		transform: none;
+	}
+
+	.form-footer {
+		text-align: center;
+		margin-top: 25rpx;
+	}
+
+	.footer-text {
+		font-size: 24rpx;
+		color: #999;
+	}
+
+	/* 版本切换按钮 */
+	.version-switch {
 		position: absolute;
-		top: 0.2rem;
-		right: 0.2rem;
-		z-index: 100;
+		top: 45rpx;
+		right: 45rpx;
+		z-index: 20;
 		background: rgba(255, 255, 255, 0.9);
-		padding: 0.1rem 0.15rem;
-		border-radius: 0.15rem;
+		padding: 18rpx 30rpx;
+		border-radius: 30rpx;
 		backdrop-filter: blur(10px);
 		cursor: pointer;
 		transition: all 0.3s ease;
-		border: 1px solid rgba(255, 107, 107, 0.3);
 	}
-			
-	.version-switch-classic:hover {
+
+	.version-switch:hover {
 		background: rgba(255, 255, 255, 1);
 		transform: scale(1.05);
-		box-shadow: 0 0.02rem 0.1rem rgba(255, 107, 107, 0.3);
 	}
-			
-	.switch-text-classic {
-		font-size: 0.12rem;
-		color: #ff6b6b;
+
+	.switch-text {
+		font-size: 26rpx;
+		color: #666;
 		font-weight: 500;
+	}
+
+	/* 响应式设计 */
+	@media screen and (max-width: 900rpx) {
+		.login-main {
+			flex-direction: column;
+			width: 90vw;
+			max-width: 650rpx;
+		}
+
+		.left-decoration {
+			padding: 35rpx;
+			min-height: 220rpx;
+		}
+
+		.pet-mascot {
+			margin-bottom: 25rpx;
+		}
+
+		.cat-face, .dog-face {
+			font-size: 55rpx;
+		}
+
+		.brand-name {
+			font-size: 34rpx;
+		}
+
+		.login-form-wrapper {
+			padding: 45rpx 35rpx;
+		}
 	}
 </style>

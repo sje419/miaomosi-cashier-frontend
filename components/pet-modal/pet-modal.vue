@@ -146,9 +146,9 @@ export default {
 .pet-modal-main {
 	position: relative;
 	z-index: 10;
-	background: linear-gradient(135deg, #fff 0%, #fef7f7 100%);
+	background: linear-gradient(135deg, #fff 0%, #f8fbff 100%);
 	border-radius: 25rpx;
-	box-shadow: 0 20rpx 60rpx rgba(255, 107, 107, 0.15);
+	box-shadow: 0 20rpx 60rpx rgba(32, 80, 179, 0.15);
 	overflow: hidden;
 	animation: slideIn 0.3s ease;
 }
@@ -156,7 +156,7 @@ export default {
 .modal-header {
 	text-align: center;
 	padding: 40rpx 30rpx 20rpx;
-	background: linear-gradient(45deg, #ff9a9e, #fecfef);
+	background: linear-gradient(45deg, #2050B3, #EACF4F);
 	color: white;
 }
 
@@ -216,15 +216,15 @@ export default {
 }
 
 .confirm-btn {
-	background: linear-gradient(45deg, #ff6b6b, #ffa500);
+	background: linear-gradient(45deg, #2050B3, #EACF4F);
 	color: white;
-	box-shadow: 0 8rpx 20rpx rgba(255, 107, 107, 0.3);
+	box-shadow: 0 8rpx 20rpx rgba(32, 80, 179, 0.3);
 }
 
 .confirm-btn:hover {
-	background: linear-gradient(45deg, #ff5252, #ff9500);
+	background: linear-gradient(45deg, #1845A0, #D4B845);
 	transform: translateY(-2rpx);
-	box-shadow: 0 12rpx 25rpx rgba(255, 107, 107, 0.4);
+	box-shadow: 0 12rpx 25rpx rgba(32, 80, 179, 0.4);
 }
 
 .btn-icon {
