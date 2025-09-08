@@ -23,7 +23,23 @@
 				</view>
 				<button type="default" class="login-btn primary-btn" @click="loginFn">登录</button>
 			</view>
+			<!-- 版本切换按钮 -->
+			<view class="version-switch-classic" @click="switchToPetLogin">
+				<text class="switch-text-classic">🐾 体验宠物版登录</text>
+			</view>
 		</view>
+		
+		<!-- 自定义宠物主题弹窗 -->
+		<pet-modal 
+			:visible="showPetModal"
+			title="切换登录主题"
+			content="想要体验专为宠物行业设计的温馨登录页面吗？"
+			iconText="🐾"
+			cancelText="保持经典"
+			confirmText="体验宠物版"
+			@cancel="showPetModal = false"
+			@confirm="confirmSwitchToPet"
+		></pet-modal>
 	</view>
 </template>
 
@@ -46,7 +62,8 @@
 					id: '',
 					img: ''
 				},
-				isSub: false
+				isSub: false,
+				showPetModal: false // 控制宠物主题弹窗显示
 			};
 		},
 		onLoad() {
@@ -128,9 +145,23 @@
 					this.$util.showToast({
 						title: validate.error
 					});
-					return false;
+						return false;
+					}
+				},
+				/**
+				 * 切换到宠物版登录页
+				 */
+				switchToPetLogin() {
+					this.showPetModal = true;
+				},
+				/**
+				 * 确认切换到宠物版
+				 */
+				confirmSwitchToPet() {
+					uni.redirectTo({
+						url: '/pages/login/login-pet'
+					});
 				}
-			}
 		},
 		watch: {
 			menu: function(menu) {
@@ -271,5 +302,32 @@
 			line-height: 0.4rem;
 			border-radius: 0.05rem;
 		}
+	}
+			
+	/* 版本切换按钮样式 */
+	.version-switch-classic {
+		position: absolute;
+		top: 0.2rem;
+		right: 0.2rem;
+		z-index: 100;
+		background: rgba(255, 255, 255, 0.9);
+		padding: 0.1rem 0.15rem;
+		border-radius: 0.15rem;
+		backdrop-filter: blur(10px);
+		cursor: pointer;
+		transition: all 0.3s ease;
+		border: 1px solid rgba(255, 107, 107, 0.3);
+	}
+			
+	.version-switch-classic:hover {
+		background: rgba(255, 255, 255, 1);
+		transform: scale(1.05);
+		box-shadow: 0 0.02rem 0.1rem rgba(255, 107, 107, 0.3);
+	}
+			
+	.switch-text-classic {
+		font-size: 0.12rem;
+		color: #ff6b6b;
+		font-weight: 500;
 	}
 </style>

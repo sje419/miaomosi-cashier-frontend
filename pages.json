@@ -84,6 +84,15 @@
 			}
 		},
 		{
+			"path": "pages/login/login-pet",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "宠物版登录",
+				"leftWindow": false,
+				"topWindow": false
+			}
+		},
+		{
 			"path": "pages/member/list",
 			"style": {
 				"navigationStyle": "custom",
