@@ -1,6 +1,6 @@
 {
     "name" : "收银台",
-    "appid" : "__UNI__A10E0DE",
+    "appid" : "__UNI__C9A408B",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : 101,
@@ -75,7 +75,7 @@
     "h5" : {
         "router" : {
             "mode" : "history",
-            "base" : "/cashregister/"
+            "base" : "/"
         },
         "sdkConfigs" : {
             "maps" : {
@@ -89,5 +89,6 @@
         "devServer" : {
             "https" : false
         }
-    }
+    },
+    "sassImplementationName" : "node-sass"
 }

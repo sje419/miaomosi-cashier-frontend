@@ -3,7 +3,7 @@
 	<view class="container" :style="themeColor">
 		<view class="login-wrap">
 			<view class="header">
-				<view class="title">智慧零售平台登录</view>
+				<view class="title">收银台</view>
 			</view>
 			<view class="form-wrap">
 				<view class="input-wrap">

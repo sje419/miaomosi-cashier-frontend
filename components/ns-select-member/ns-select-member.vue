@@ -12,19 +12,18 @@
 					<input type="number" class="member-input" focus placeholder="请输入手机号或手机号后四位" placeholder-style="font-size:0.14rem" v-model="searchText" @confirm="searchMemberByMobileFn()" :focus="inputFocus" @focus="inputFocus = true" @blur="inputFocus = false" />
 					<button class="switch primary-btn" @click="searchMemberByMobileFn()">查询</button>
 					<view class="function-list">
-						<view class="item-wrap" @click="stayTuned">
+						<!-- <view class="item-wrap" @click="stayTuned">
 							<text class="item-icon iconfont iconmenpos"></text>
 							<text>刷卡登录</text>
-						</view>
-						<view class="item-wrap" @click="stayTuned">
-							<!-- <image class="item-img" mode="aspectFill" src="@/static/member/head.png" /> -->
+						</view> -->
+						<!-- <view class="item-wrap" @click="stayTuned">
 							<text class="item-icon iconfont iconsaomiaoerweima"></text>
 							<text>扫码登录</text>
-						</view>
-						<view class="item-wrap" @click="stayTuned">
+						</view> -->
+						<!-- <view class="item-wrap" @click="stayTuned">
 							<text class="item-icon iconfont iconhuaxiangfenxi"></text>
 							<text>人脸登录</text>
-						</view>
+						</view> -->
 						<view class="item-wrap" @click="memberType = 'register'">
 							<text class="item-icon iconfont iconhuiyuanzhucedengluguanli"></text>
 							<text>会员注册</text>

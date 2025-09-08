@@ -6,13 +6,13 @@ var app = {
 
 var config = {
 	// 站点ID
-	siteId: 0,
+	siteId: 1,
 	// api请求地址 https://abc.com
-	baseUrl: '{{$baseUrl}}',
+	baseUrl: 'https://mapi.miaomosi.com',
 	// 图片域名 https://abc.com
-	imgDomain: '{{$imgDomain}}',
+	imgDomain: 'https://mapi.miaomosi.com',
 	//长链接 wss://abc.com/wss
-	webSocket: '{{$webSocket}}',
+	webSocket: 'wss://mapi.miaomosi.com',
 	// app版本信息
 	app: app,
 }

@@ -11,7 +11,7 @@
 				<block v-for="(item, index) in menu" :key="index">
 					<view class="menu-item" :class="{ active: index == firstMenuIndex }" @click="firstMenu(item, index)" v-if="item.title">
 						<view class="iconfont" :class="item.icon"></view>
-						<view>
+						<view class="menu-text">
 							<text>{{ item.title }}</text>
 							<!-- <text v-if="item.keyCode" class='key-code'>[{{ item.keyCode }}]</text> -->
 						</view>
@@ -463,6 +463,10 @@ export default {
 		.iconfont {
 			font-size: 0.24rem;
 			margin-bottom: 0.02rem;
+		}
+
+		.menu-text {
+			margin-top: 0.05rem;
 		}
 
 		&.active {

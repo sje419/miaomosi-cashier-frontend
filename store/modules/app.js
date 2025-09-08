@@ -209,7 +209,12 @@ const actions = {
 	getThemeConfigFn(context) {
 		getThemeConfig().then((res) => {
 			if (res.code == 0) {
-				context.commit('setThemeConfig', res.data)
+				// context.commit('setThemeConfig', res.data)
+				context.commit('setThemeConfig', {
+					title : '中性色', // 标题
+					name : 'primary', // 标识
+					color : '#2d8cf0' // 主色调
+				})
 			}else{
 				context.commit('setThemeConfig', {
 					title : '橙色', // 标题

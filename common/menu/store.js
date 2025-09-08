@@ -52,12 +52,12 @@ export default [{
 						path: '/pages/billing/index',
 						name: 'billing'
 					},
-					{
-						title: '售卡',
-						icon: 'iconqia',
-						path: '/pages/buycard/index',
-						name: 'buycard'
-					},
+					// {
+					// 	title: '售卡',
+					// 	icon: 'iconqia',
+					// 	path: '/pages/buycard/index',
+					// 	name: 'buycard'
+					// },
 					{
 						title: '核销',
 						icon: 'iconhexiao',
